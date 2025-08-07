@@ -1,1 +1,5 @@
+.ipynb_checkpoints/
 data/
+reports/exp1
+reports/.ipynb_checkpoints
+notebooks/.ipynb_checkpoints
