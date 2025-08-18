@@ -3,3 +3,6 @@ data/
 reports/exp1
 reports/.ipynb_checkpoints
 notebooks/.ipynb_checkpoints
+reports/exp2
+models/.ipynb_checkpoints
+src/__pycache__

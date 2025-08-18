@@ -20,6 +20,7 @@ A deep learning-based binary image classifier for detecting **pneumonia** from *
 
 xray-pneumonia-classifier/
 │
+├── app/                    # contains the app.py file for running streamlit based interface.
 ├── data/                   # Contains training, validation, inference images (ignored in Git)
 ├── models/                 # Trained model weights (ResNet18)
 ├── notebooks/              # Jupyter notebooks for EDA, training, experimentation
@@ -37,7 +38,7 @@ xray-pneumonia-classifier/
 
 
 ## Model Details
-**Base model**: torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights)
+**Base model**: torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.DEFAULT)
 
 **Modified input layer**: 3-channel grayscale
 
@@ -47,7 +48,7 @@ xray-pneumonia-classifier/
 
 **Metrics**: Training/Validation Loss and Accuracy
 
-**Epoch time**: ~3 hours/epoch for custom CNN (replaced by efficient ResNet18)
+**Epoch time**: ~3 hours/epoch for custom CNN (replaced by efficient ResNet18 --> ~5 mins/epoch)
 
 ## 🧪 How to Use
 **1. Clone the Repo**
@@ -77,7 +78,7 @@ tensorboard --logdir=runs/
 
 
 ## 🌐 Deployment Plan
-A lightweight web interface will be built using Streamlit or Gradio to:
+A lightweight web interface built using Streamlit to:
 
 Upload and classify X-ray images
 
