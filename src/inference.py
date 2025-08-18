@@ -1,5 +1,5 @@
 import torch
-from train import val_transforms
+from .train import val_transforms
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from tqdm import tqdm
@@ -12,7 +12,7 @@ infer_dataset = ImageFolder(root=infer_dir, transform=val_transforms)
 data_loader = DataLoader(infer_dataset)
 
 
-model = torch.load('../models/x_ray_classifier_resnet_18.pt', map_location=device)
+model = torch.load('../models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt', map_location=device)
 
 model.eval()
 model.to(device)
@@ -28,11 +28,6 @@ with torch.no_grad():
         preds = (probs > 0.5).int()
         for i in range(x.size(0)):
             print(f"Prediction: {class_names[int(preds[i].item())]} | Confidence: {probs[i].item():.3f}")
-
-
-
-
-
 
 
 
