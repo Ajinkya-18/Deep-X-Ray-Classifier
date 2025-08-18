@@ -12,7 +12,7 @@ from src.utils import load_model, val_transforms
 
 @st.cache_resource
 def get_model():
-    return load_model('A:/AI-Projects/personal-projects/deep-x-ray-classifier/models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt')
+    return load_model('../models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt')
 
 model = get_model()
 
