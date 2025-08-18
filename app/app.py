@@ -11,10 +11,12 @@ from src.utils import load_model, val_transforms
 
 
 @st.cache_resource
-def get_model():
-    return load_model('../models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt')
+def get_model(model_path:str):
+    return load_model(model_path)
 
-model = get_model()
+
+MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt')
+model = get_model(MODEL_PATH)
 
 
 st.title("X-Ray Pneumonia Classifier")
