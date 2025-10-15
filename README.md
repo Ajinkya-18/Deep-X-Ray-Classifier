@@ -73,9 +73,87 @@ data/infer/PNEUMONIA/
 **Then run:**
 python src/inference.py
 
-### 📊 TensorBoard Logging
-tensorboard --logdir=runs/
+---
 
+## Implementation details (in-depth)
+
+This section summarizes the concrete implementation in `src/` and the exact model artifacts produced by training.
+
+1) Project scripts
+
+- `src/train.py` — training entry point. It builds DataLoaders from `data/chest_xray/train` and `data/chest_xray/test` using the transforms defined in `src/utils.py`, initializes a ResNet18 backbone (pretrained weights), replaces the `fc` head with a small MLP, freezes backbone weights by default, then trains for up to 50 epochs with BCEWithLogitsLoss, Adam optimizer and ReduceLROnPlateau scheduling. The best model (by validation loss) is saved to `models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt`.
+
+- `src/test.py` — evaluation script. Loads `../models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt` via `utils.load_model()` and runs the `test_model()` routine on `data/test` using the same validation transforms.
+
+- `src/inference.py` — inference script. Loads `../models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt` (or another model file you provide) and runs predictions on images placed under `data/infer`. Outputs predicted class and confidence for each image.
+
+- `src/utils.py` — shared utilities: transforms, model initialization (`initialize_model()`), train/test loops (`train_model()`, `test_model()`), model saving/loading helpers and an `EarlyStopping` helper.
+
+
+### Transforms and preprocessing
+
+- Training transforms (`train_transforms`) apply: convert to 3-channel grayscale, resize to 256x256, random horizontal flip, small rotation, Gaussian blur, conversion to tensor/dtype, and normalization (ImageNet mean/std). Validation transforms (`val_transforms`) perform grayscale-to-3, resize, dtype conversion and normalization.
+
+### Model architecture
+
+- Base backbone: `torchvision.models.resnet18(weights=ResNet18_Weights.DEFAULT)`
+
+- Modified final head: sequential MLP replacing `model.fc`:
+  - Linear(in_features, 128) -> ReLU -> Linear(128, 64) -> ReLU -> Linear(64, num_classes)
+
+- Backbone is frozen by default; training focuses on the custom head. The code contains commented lines showing how to unfreeze layer-4 if you want to fine-tune.
+
+### Training details
+
+- Loss: `BCEWithLogitsLoss` (binary classification)
+- Optimizer: `Adam` with ReduceLROnPlateau scheduler
+- Early stopping: implemented with patience and min_delta in `utils.EarlyStopping`.
+- Logging: TensorBoard writer writes to `../reports/exp2_resnet18-layer4-fc-unfrozen` by default.
+
+### Artifacts and filenames
+
+- Trained model saved by default to: `models/x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt` (train script overwrites when validation loss improves).
+- Example model filenames you may see in `models/` (repository may contain earlier versions):
+  - `x_ray_classifier_resnet18-layer4-fc-unfrozen_v1.pt`
+  - (other variants may exist depending on experiments)
+
+### Quick commands (copyable)
+
+```powershell
+# create env & install
+pip install -r requirements.txt
+
+# train
+python src/train.py
+
+# test/evaluate
+python src/test.py
+
+# inference (places images under data/infer/)
+python src/inference.py
+
+# start tensorboard (from repo root)
+tensorboard --logdir=reports/
+```
+
+### Notes and tips
+
+- The code uses CPU by default but will automatically use CUDA if available for inference (see `src/inference.py`). Training code in `src/train.py` currently sets device to `cpu` — you can modify the `device` variable and DataLoader options for GPU acceleration.
+- If you want to fine-tune more layers, uncomment the appropriate lines in `src/utils.initialize_model` that unfreeze `layer4` parameters.
+- Keep an eye on the saved checkpoints under `models/` and the TensorBoard logs in `reports/` to compare experiments.
+
+---
+
+If you want, I can:
+
+- update `src/train.py` to accept CLI args (data paths, epochs, batch size, device) using `argparse` so the script is easier to run;
+- add a small Streamlit demo in `app/` (already present) wired to load the best model and predict uploaded images.
+
+### 📊 TensorBoard Logging
+
+```powershell
+tensorboard --logdir=runs/
+```
 
 ## 🌐 Deployment Plan
 A lightweight web interface built using Streamlit to:
@@ -90,13 +168,17 @@ Provide results in real-time
 This project is open-sourced under the MIT License.
 
 
-### 🙌 Acknowledgments
-**Dataset from Kaggle**
-link - https://www.kaggle.com/datasets/tolgadincer/labeled-chest-xray-images
 
-PyTorch & Torchvision for backbone models
-TensorBoard for visualizations
+### 🙌 Acknowledgments
+
+#### Dataset (Kaggle)
+
+- [Labeled Chest Xray Images (Kaggle)](https://www.kaggle.com/datasets/tolgadincer/labeled-chest-xray-images)
+
+- PyTorch & Torchvision for backbone models
+- TensorBoard for visualizations
 
 ### 📬 Contact
+
 Ajinkya Tamhankar
-📧 ajinkya.tamhankar18@gmail.com
+<ajinkya.tamhankar18@gmail.com>
