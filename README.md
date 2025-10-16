@@ -164,9 +164,12 @@ Display model confidence
 
 Provide results in real-time
 
+### Streamlit App link
+- [X-Ray Classifier](https://deep-x-ray-classifier-bwpdkh2gmjw8aupt5muygp.streamlit.app/)
+
+
 ## 🛡️ License
 This project is open-sourced under the MIT License.
-
 
 
 ### 🙌 Acknowledgments
@@ -182,3 +185,5 @@ This project is open-sourced under the MIT License.
 
 Ajinkya Tamhankar
 <ajinkya.tamhankar18@gmail.com>
+
+
