@@ -1,0 +1,14 @@
+name: Keep Streamlit App Awake
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # every 30 minutes (UTC timezone)
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl to keep app awake
+        run: |
+          curl -s https://deep-x-ray-classifier-bwpdkh2gmjw8aupt5muygp.streamlit.app
