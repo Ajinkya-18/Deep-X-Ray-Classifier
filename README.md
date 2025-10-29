@@ -16,6 +16,11 @@ A deep learning-based binary image classifier for detecting **pneumonia** from *
 
 ---
 
+## Streamlit App link
+[X-Ray Classifier](https://deep-x-ray-classifier-bwpdkh2gmjw8aupt5muygp.streamlit.app/)
+  
+---
+
 ## 📁 Directory Structure
 
 xray-pneumonia-classifier/
@@ -163,9 +168,6 @@ Upload and classify X-ray images
 Display model confidence
 
 Provide results in real-time
-
-### Streamlit App link
-- [X-Ray Classifier](https://deep-x-ray-classifier-bwpdkh2gmjw8aupt5muygp.streamlit.app/)
 
 
 ## 🛡️ License
