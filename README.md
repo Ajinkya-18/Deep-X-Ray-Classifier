@@ -21,6 +21,11 @@ A deep learning-based binary image classifier for detecting **pneumonia** from *
   
 ---
 
+### Hire me for your next AI Project on Fiverr: 
+[My Fiverr Profile](https://www.fiverr.com/s/ZmD23WR)
+
+---
+
 ## 📁 Directory Structure
 
 xray-pneumonia-classifier/
